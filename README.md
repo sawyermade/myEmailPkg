@@ -31,10 +31,10 @@ Usage:
 ```
 import myEmail
 
-bool = myEmail.sendEmail(fromAddr, toAddr, subject, msg, serverAddr, password, username=None, inPort=25, outPort=587)
+bool = myEmail.sendEmail(fromAddr, toAddr, subject, msg, password, serverAddr=None, username=None, port=587):
 ```
 Returns True if complete, prints exception and returns False if not.
 
 Uses fromAddr as default username unless passing username parameter
 
-Default SMTP port in/out = 25/587
+Default SMTP port=587
