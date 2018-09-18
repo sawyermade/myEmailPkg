@@ -1,9 +1,17 @@
 import smtplib
 
-def sendEmail(fromAddr, toAddr, subject, msg, serverAddr, password, username=None, inPort=25, outPort=587):
+def smcEmail(toAddr, subject, msg, password, username=None, port=587):
+    # From addr
+    fromAddr = 'smc@sawyer0.com'
+
     # Sets username
     if username is None:
         username = fromAddr
+    else:
+        fromAddr = username
+
+    # Gets server addr
+    serverAddr = fromAddr.split('@')[-1]
     
     # Creates message with header
     header = 'FROM: {}\nTO: {}\nSUBJECT: {}\n'.format(fromAddr, toAddr, subject)
@@ -11,8 +19,39 @@ def sendEmail(fromAddr, toAddr, subject, msg, serverAddr, password, username=Non
 
     try:
         # Connects to server and sends mail
-        server = smtplib.SMTP(serverAddr, inPort)
-        server.connect(serverAddr, outPort)
+        server = smtplib.SMTP(serverAddr, port)
+        server.connect(serverAddr, port)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login(username, password)
+        server.sendmail(fromAddr, toAddr, msg)
+
+        # Returns true if complete
+        return True
+
+    except Exception as e:
+        # Prints exception and returns false
+        print(e)
+        return False
+
+def sendEmail(fromAddr, toAddr, subject, msg, password, serverAddr=None, username=None, port=587):
+    # Sets username
+    if username is None:
+        username = fromAddr
+
+    # Sets serverAddr
+    if serverAddr is None:
+        serverAddr = fromAddr.split('@')[-1]
+    
+    # Creates message with header
+    header = 'FROM: {}\nTO: {}\nSUBJECT: {}\n'.format(fromAddr, toAddr, subject)
+    msg = header + msg
+
+    try:
+        # Connects to server and sends mail
+        server = smtplib.SMTP(serverAddr, port)
+        server.connect(serverAddr, port)
         server.ehlo()
         server.starttls()
         server.ehlo()

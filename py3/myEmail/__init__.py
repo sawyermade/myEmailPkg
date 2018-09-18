@@ -1,1 +1,1 @@
-from .my_email import sendEmail
+from .my_email import *
