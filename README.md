@@ -15,7 +15,7 @@ $ conda activate Py3EnvName
 $ python setup.py install
 ```
 
-Install Python 2:
+Install Python 2: ***NOT WORKING ATM***
 ```
 System:
 $ cd py2
